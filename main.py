@@ -2,7 +2,8 @@
 import math
 from itertools import product
 
-def is_valid_solution(solution, size):
+def is_valid_solution(solution, grid):
+    size = len(grid)
     length = int(math.sqrt(size))
 
     for i in range(len(solution)):
@@ -55,18 +56,28 @@ def is_valid_solution(solution, size):
             if (solution[i] in [2, 4, 6]):
                 return False
 
+
+        #Проверяем на соответствие таблице точек
+
+        if (grid[i] == 'a'):
+            if solution[i] not in [1, 2, 3, 4]:
+                return False
+        if (grid[i] == 'b'):
+            if solution[i] not in [5, 6]:
+                return False
     return True
 
 
 # Функция для генерации всех возможных решений
-def generate_solutions(size):
+def generate_solutions(grid):
+    size = len(grid)
     solutions = []
     possible_values = range(1, 8)  # Возможные значения от 1 до 7
 
     # Генерируем все возможные комбинации для клеток
     for solution in product(possible_values, repeat=size):
         # Проверяем, соответствует ли решение условиям головоломки
-        if is_valid_solution(solution, size):
+        if is_valid_solution(solution, grid):
             solutions.append(solution)
 
     return solutions
@@ -104,9 +115,22 @@ def print_table(solution, size):
 
 
 if __name__ == "__main__":
-    size = 4
+    grid = [
+        'a', 'b', 'b', 'a',
+        'b', '0', '0', 'b',
+        'b', '0', '0', 'b',
+        'a', 'b', 'b', 'a',
+    ]
+
+    # grid = [
+    #     'a', 'a',
+    #     'a', 'a'
+    # ]
+
+
+    size = len(grid)
     # Генерируем все возможные решения
-    solutions = generate_solutions(size)
+    solutions = generate_solutions(grid)
     # Выводим решения
     print("Всего решений:", len(solutions))
     print_solutions(solutions, size)
