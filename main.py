@@ -4,8 +4,9 @@ import math
 
 def is_valid_solution(solution, size):
     length = int(math.sqrt(size))
-    # Проверяем условие черного круга
+
     for i in range(len(solution)):
+        # Проверяем условие замкнутости (у каждой клетки ровно 2 соседа)
         try:
             if solution[i] == 1:
                 if (solution[i - 1] not in [2, 4, 6]):
@@ -39,6 +40,20 @@ def is_valid_solution(solution, size):
                     return False
         except IndexError:
             return False
+
+        #Проверяем на соответствие границам
+        if i < length: # Если в первой строке
+            if (solution[i] in [3, 4, 5]):
+                return False
+        if i>=size-length: # Если в последней строке
+            if (solution[i] in [1, 2, 5]):
+                return False
+        if (i%length==0):#Если в левом ряду
+            if (solution[i] in [1, 3, 6]):
+                return False
+        if (i%length==length-1):# Если в правом ряду
+            if (solution[i] in [2, 4, 6]):
+                return False
 
     return True
 
