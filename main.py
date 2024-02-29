@@ -1,6 +1,6 @@
 # Функция для проверки условий головоломки
 import math
-
+from itertools import product
 
 def is_valid_solution(solution, size):
     length = int(math.sqrt(size))
@@ -61,35 +61,27 @@ def is_valid_solution(solution, size):
 # Функция для генерации всех возможных решений
 def generate_solutions(size):
     solutions = []
-    # Генерируем все возможные комбинации для клеток 1-7
-    for i1 in range(1, 8):
-        for i2 in range(1, 8):
-            for i3 in range(1, 8):
-                for i4 in range(1, 8):
-                    for i5 in range(1, 8):
-                        for i6 in range(1, 8):
-                            for i7 in range(1, 8):
-                                for i8 in range(1, 8):
-                                    for i9 in range(1, 8):
-                                        solution = [i1, i2, i3,
-                                                    i4, i5, i6,
-                                                    i7, i8, i9]
-                                        # Проверяем, соответствует ли решение условиям головоломки
-                                        if is_valid_solution(solution, size):
-                                            solutions.append(solution)
-                                            # print(solution)
+    possible_values = range(1, 8)  # Возможные значения от 1 до 7
+
+    # Генерируем все возможные комбинации для клеток
+    for solution in product(possible_values, repeat=size):
+        # Проверяем, соответствует ли решение условиям головоломки
+        if is_valid_solution(solution, size):
+            solutions.append(solution)
+
     return solutions
 
 
 
 
 # Функция для вывода решений
-def print_solutions(solutions):
+def print_solutions(solutions, size):
     for solution in solutions:
-        print_table(solution)
+        print_table(solution, size)
         print('------------')
 
-def print_table(solution):
+def print_table(solution, size):
+    length = int(math.sqrt(size))
     # Маппинг цифр на соответствующие символы
     symbol_map = {
         1: '\u2510',
@@ -100,25 +92,24 @@ def print_table(solution):
         6: '\u2500',
         7: ' '
     }
-    size = 3
-    for i in range(size):
-        row = solution[i*size: (i+1)*size]
+    for i in range(length):
+        row = solution[i*length: (i+1)*length]
         row_str = ""
         for cell in row:
             row_str += symbol_map[cell] + " "
         print(row_str)
-        if i < size - 1:
+        if i < length - 1:
             print("    ")
 
 
 
 if __name__ == "__main__":
-    size = 9
+    size = 4
     # Генерируем все возможные решения
     solutions = generate_solutions(size)
     # Выводим решения
     print("Всего решений:", len(solutions))
-    print_solutions(solutions)
+    print_solutions(solutions, size)
 
 
 
